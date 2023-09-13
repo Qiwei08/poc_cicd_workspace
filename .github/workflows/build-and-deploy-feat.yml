@@ -16,12 +16,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Extract branch name
-        shell: bash
-        run: |
-          echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}"
-          echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-        id: extract_branch
+      - name: Split branch name
+        env:
+          BRANCH: ${GITHUB_HEAD_REF}
+        id: split
+        run: echo "::set-output name=fragment::${BRANCH##*/}"
 
       - name: checkout repo content
         uses: actions/checkout@v2 # checkout the repository content
@@ -55,7 +54,7 @@ jobs:
             file_name=$(basename ${file})
             file_name_without_ext=${file_name%.*}
             python __main__.py --action package_job --job_name ${file_name_without_ext} 
-            python __main__.py --action update_job --job_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env 
+            python __main__.py --action update_job --job_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env ${{ steps.split.outputs.fragment }}
           done
 
       - name: Run step if any of the pipelines files above change
@@ -66,5 +65,5 @@ jobs:
             echo "$file was modified"
             file_name=$(basename ${file})
             file_name_without_ext=${file_name%.*}
-            python __main__.py --action update_pipeline --pipeline_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env 
+            python __main__.py --action update_pipeline --pipeline_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env ${{ steps.split.outputs.fragment }}
           done
