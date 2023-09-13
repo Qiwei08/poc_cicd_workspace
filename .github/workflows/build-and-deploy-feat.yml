@@ -17,12 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Split branch name
-        env:
-          BRANCH: ${GITHUB_HEAD_REF}
         id: split
         run: |
-          echo "name=${BRANCH##*/}"
-          echo "name=${BRANCH##*/}" >> $GITHUB_OUTPUT
+          echo "name=${GITHUB_REF##*/}"
+          echo "name=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
 
       - name: checkout repo content
         uses: actions/checkout@v2 # checkout the repository content
