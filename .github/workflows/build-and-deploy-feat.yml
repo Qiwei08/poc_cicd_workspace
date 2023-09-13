@@ -20,7 +20,9 @@ jobs:
         env:
           BRANCH: ${GITHUB_HEAD_REF}
         id: split
-        run: echo "::set-output name=fragment::${BRANCH##*/}"
+        run: |
+          echo "name=fragment::${BRANCH##*/}" 
+          echo "name=fragment::${BRANCH##*/}" >> $GITHUB_OUTPUT
 
       - name: checkout repo content
         uses: actions/checkout@v2 # checkout the repository content
