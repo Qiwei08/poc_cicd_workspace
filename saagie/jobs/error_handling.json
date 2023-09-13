@@ -6,7 +6,7 @@
     "technology": "bash",
     "technology_catalog": "Saagie",
     "runtime_version": "debian12-bookworm",
-    "command_line": "echo 'ERROR'\n echo 'Some error detected, please check logs'",
+    "command_line": "echo 'ERROR'\necho 'Some error detected, please check logs'",
     "extra_technology": "",
     "extra_technology_version": ""
 }
