@@ -1,0 +1,12 @@
+{
+    "job_name": "1 Data preparation",
+    "file_path": "dist/1 Data preparation.zip",
+    "description": "",
+    "category": "Processing",
+    "technology": "python",
+    "technology_catalog": "Saagie",
+    "runtime_version": "3.9",
+    "command_line": "python {file}",
+    "extra_technology": "",
+    "extra_technology_version": ""
+}

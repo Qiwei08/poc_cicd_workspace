@@ -1,0 +1,12 @@
+{
+    "job_name": "5 Inference handler",
+    "file_path": "dist/5 Inference handler.zip",
+    "description": "",
+    "category": "Processing",
+    "technology": "python",
+    "technology_catalog": "Saagie",
+    "runtime_version": "3.9",
+    "command_line": "python {file} --model_name \"CommentCLF1\" --input_texts \"['Very good movie!', 'No! Hate this one! Not interesting at all', 'I was looking forward to this movie, excellent actors and music', 'What a nasty cynical film.']\"",
+    "extra_technology": "",
+    "extra_technology_version": ""
+}

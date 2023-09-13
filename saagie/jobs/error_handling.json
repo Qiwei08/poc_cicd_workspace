@@ -1,0 +1,12 @@
+{
+    "job_name": "Error handling",
+    "file_path": "",
+    "description": "error printing",
+    "category": "Processing",
+    "technology": "bash",
+    "technology_catalog": "Saagie",
+    "runtime_version": "debian12-bookworm",
+    "command_line": "echo 'ERROR'",
+    "extra_technology": "",
+    "extra_technology_version": ""
+}
