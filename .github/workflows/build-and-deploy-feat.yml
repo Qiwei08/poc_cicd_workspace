@@ -16,8 +16,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Split branch name
-        id: split
+      - name: Get branch name
+        id: get_branch_name
         run: |
           echo "name=${GITHUB_REF##*/}"
           echo "name=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
@@ -54,7 +54,7 @@ jobs:
             file_name=$(basename ${file})
             file_name_without_ext=${file_name%.*}
             python __main__.py --action package_job --job_name ${file_name_without_ext} 
-            python __main__.py --action update_job --job_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env ${{ steps.split.outputs.fragment }}
+            python __main__.py --action update_job --job_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env ${{ steps.get_branch_name.outputs.name }}
           done
 
       - name: Run step if any of the pipelines files above change
@@ -65,5 +65,5 @@ jobs:
             echo "$file was modified"
             file_name=$(basename ${file})
             file_name_without_ext=${file_name%.*}
-            python __main__.py --action update_pipeline --pipeline_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env ${{ steps.split.outputs.fragment }}
+            python __main__.py --action update_pipeline --pipeline_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env ${{ steps.split.outputs.name }}
           done
