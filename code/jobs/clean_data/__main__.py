@@ -5,7 +5,7 @@ import logging
 import s3fs
 import pandas as pd
 
-## Define logging behavior
+# Define logging behavior
 logging.getLogger("tokenizers").setLevel(logging.CRITICAL)
 logging.getLogger("transformers").setLevel(logging.CRITICAL)
 logging.basicConfig(level=logging.INFO, format='%(name)s - %(levelname)s - %(message)s')

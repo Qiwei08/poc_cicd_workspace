@@ -65,7 +65,7 @@ jobs:
             file_name=$(basename ${file})
             file_name_without_ext=${file_name%.*}
             python __main__.py --action package_job --job_name ${file_name_without_ext} 
-            python __main__.py --action update_job --job_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env ${{ steps.split.outputs.name }}
+            python __main__.py --action update_job --job_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env ${{ steps.get_branch_name.outputs.name }}
           done
 
       - name: Run step if any of the jobs source dir above change
@@ -76,7 +76,7 @@ jobs:
             dir_name=$(basename ${file})
             echo "$dir_name"
             python __main__.py --action package_job --job_name ${dir_name} 
-            python __main__.py --action update_job --job_name ${dir_name} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env ${{ steps.split.outputs.name }}
+            python __main__.py --action update_job --job_name ${dir_name} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env ${{ steps.get_branch_name.outputs.name }}
           done
 
       - name: Run step if any of the pipelines files above change
@@ -87,5 +87,5 @@ jobs:
             echo "$file was modified"
             file_name=$(basename ${file})
             file_name_without_ext=${file_name%.*}
-            python __main__.py --action update_pipeline --pipeline_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env ${{ steps.split.outputs.name }}
+            python __main__.py --action update_pipeline --pipeline_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env ${{ steps.get_branch_name.outputs.name }}
           done
