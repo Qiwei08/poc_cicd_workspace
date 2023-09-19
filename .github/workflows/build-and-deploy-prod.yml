@@ -33,7 +33,17 @@ jobs:
             jobs:
               - saagie/jobs/*.json
             pipelines:
+              - code/pipelines/*.yaml
               - saagie/pipelines/*.json
+
+      - name: Run changed-files with dir_names
+        id: changed-files-dir-names
+        uses: tj-actions/changed-files@v37
+        with:
+          dir_names: "true"
+          files_yaml: |
+            source_code:
+              - code/jobs/*/*.py
 
       - name: Run step if any of the jobs files above change
         if: steps.changed-files-specific.outputs.jobs_any_changed == 'true' # check if a job config file have change
@@ -44,7 +54,18 @@ jobs:
             file_name=$(basename ${file})
             file_name_without_ext=${file_name%.*}
             python __main__.py --action package_job --job_name ${file_name_without_ext} 
-            python __main__.py --action update_job --job_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env dev
+            python __main__.py --action update_job --job_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env prod
+          done
+
+      - name: Run step if any of the jobs source dir above change
+        if: steps.changed-files-dir-names.outputs.source_code_any_changed == 'true'
+        run: |
+          for file in ${{ steps.changed-files-dir-names.outputs.source_code_all_changed_files }}; do
+            echo "$file was modified"
+            dir_name=$(basename ${file})
+            echo "$dir_name"
+            python __main__.py --action package_job --job_name ${dir_name} 
+            python __main__.py --action update_job --job_name ${dir_name} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env prod
           done
 
       - name: Run step if any of the pipelines files above change
@@ -55,5 +76,5 @@ jobs:
             echo "$file was modified"
             file_name=$(basename ${file})
             file_name_without_ext=${file_name%.*}
-            python __main__.py --action update_pipeline --pipeline_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env dev
+            python __main__.py --action update_pipeline --pipeline_name ${file_name_without_ext} --saagie_url ${{secrets.SAAGIE_URL}} --saagie_user ${{secrets.SAAGIE_USER}} --saagie_pwd ${{secrets.SAAGIE_PWD}} --saagie_realm ${{secrets.SAAGIE_REALM}} --saagie_env prod
           done
