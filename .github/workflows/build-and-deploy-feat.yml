@@ -20,6 +20,12 @@ jobs:
       - name: checkout repo content
         uses: actions/checkout@v2 # checkout the repository content
 
+      - name: Get branch name
+        id: get_branch_name
+        run: |
+          echo "name=${GITHUB_REF##*/}"
+          echo "name=${GITHUB_REF##*/}" >> $GITHUB_OUTPUT
+
       - name: setup python
         uses: actions/setup-python@v4
         with:
