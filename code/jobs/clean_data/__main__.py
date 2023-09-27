@@ -4,6 +4,7 @@ import argparse
 import logging
 import s3fs
 import pandas as pd
+import numpy
 
 # Define logging behavior
 logging.getLogger("tokenizers").setLevel(logging.CRITICAL)
