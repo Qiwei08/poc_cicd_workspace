@@ -3,7 +3,7 @@ import argparse
 import s3fs
 import pandas as pd
 from datasets import load_dataset
-
+import os
 
 #%%
 ## Arguments
